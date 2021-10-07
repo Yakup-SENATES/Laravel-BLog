@@ -22,7 +22,7 @@ class ArticleSeeder extends Seeder
         $title = $faker->sentence(7);
         for ($i = 0; $i < 4; $i++) {
             DB::table('articles')->insert([
-                'category_id' => rand(1, 9),
+                'category_id' => 2,
                 'title' => $title,
                 'image' => $faker->imageUrl(800, 600, 'cats', true, 'Merhaba TheJC'),
                 'content' => $faker->paragraph(6),

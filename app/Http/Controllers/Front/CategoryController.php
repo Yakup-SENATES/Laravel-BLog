@@ -5,19 +5,32 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Contact;
+use App\Models\Pages;
+
+use Validator;
 use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        view()->share('pages', Pages::orderBy('order', 'ASC')->get());
+        view()->share('categories', Category::All());
+    }
+
+
     public function index()
     {
-        $categories =  Category::all();
-        // dd($categories);
-        $articles = Article::orderBy('created_at', 'DESC')->get();
 
+        $articles = Article::orderBy('created_at', 'DESC')->paginate(2);
+        $articles->withPath(url('yazilar/sayfa'));
+
+        //$pages = Pages::orderBy('order', 'ASC')->get();
 
         return view('front.index', [
-            'categories' => $categories,
+
             'articles' => $articles,
         ]);
     }
@@ -33,10 +46,13 @@ class CategoryController extends Controller
 
         $article->increment('hit');
 
-        $categories =  Category::all();
+        //$pages = Pages::orderBy('order', 'ASC')->get();
+
+
         return view('front.post', [
-            'categories' => $categories,
+
             'article' => $article,
+
         ]);
     }
 
@@ -45,13 +61,67 @@ class CategoryController extends Controller
     {
         $category = Category::whereSlug($slug)->first() ??  abort(403, 'Bu kategory boş veya değiştirilmiş.');
 
-        $articles = Article::where('category_id', $category->id)->orderBy('created_at', 'DESC')->get();
+        $articles = Article::where('category_id', $category->id)->orderBy('created_at', 'DESC')->paginate(2);
+        $articles->withPath(url('yazilar/sayfa'));
 
-        $categories = Category::All();
+        //$pages = Pages::orderBy('order', 'ASC')->get();
+
+
         return view('front.category', [
             'category' => $category,
-            'categories' => $categories,
+
             'articles' => $articles,
+
         ]);
+    }
+
+
+    public function page($slug)
+    {
+        $page = Pages::whereSlug($slug)->first()  ??  abort(403, 'Böyle bir sayfa daha tasarlanmadı');
+
+        return view(
+            'front\page',
+            [
+                'page' => $page,
+
+            ]
+        );
+    }
+
+    public function contact()
+    {
+        return view('front.contact',);
+    }
+
+
+    public function contactPost(Request $request)
+    {
+
+        $rules = [
+            'name' => 'required|min:5',
+            'email' => 'required|email',
+            'topic' => 'required',
+            'message' => 'required|min:',
+        ];
+
+        $validate = Validator::make($request->post(), $rules);
+
+
+        if ($validate->fails()) {
+            //print_r($validate->errors()->first('message'));
+            return redirect()->route('contact')->withErrors($validate)->withInput();
+        } else {
+
+            $contact = new Contact();
+            $contact->name = $request->name;
+            $contact->email = $request->email;
+            $contact->topic = $request->topic;
+            $contact->message = $request->message;
+            $contact->save();
+            return redirect()->route('contact')->with('success', 'Mesajınız Başarıyla  İletilmiştir');
+        }
+
+        return back();
     }
 }

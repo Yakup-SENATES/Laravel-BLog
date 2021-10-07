@@ -8,7 +8,11 @@
 		<div class="list-group">
 
 			@foreach( $categories as $cat )
-			<a href="{{route('category', $cat->slug)}}" class="list-group-item">{{$cat->name}}<span class="badge bg-black" style="float: right;">{{$cat->articleCount()}}</span></a>
+			<li class="list-group-item  @if (Request::segment(2)==$cat->slug)
+				active @endif">
+			<a @if (Request::segment(2)!=$cat->slug) href="{{route('category', $cat->slug)}}" @endif> {{$cat->name}} <span class="badge bg-black" style="float: right;">{{$cat->articleCount()}}
+			</span></a>
+			</li>
 			@endforeach
 		</div>
 
