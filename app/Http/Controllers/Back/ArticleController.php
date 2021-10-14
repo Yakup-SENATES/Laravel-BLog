@@ -7,6 +7,8 @@ use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use File;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -128,6 +130,8 @@ class ArticleController extends Controller
         $article->category_id = $request->category;
         $article->slug = Str::slug($request->title);
         $article->content = $request->content;
+        $article->status  = Str::lower($request->status);
+
 
         if ($request->hasFile(('image'))) {
 
@@ -153,16 +157,54 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        Article::findOrFail($id)->delete();
+        toastr()->success('Çöp Kutusuna Atıldı');
+        return redirect()->route('makaleler.index');
     }
 
-    //yukarıdaki metodalar resource controller de var bunu özel tasarladık bu sebeple route yazmalıyız 
+
     public function switch(Request $request)
     {
-        //$article = Article::findOrFail($request->id);
-        //$article->status = $request->_status;
-        //$article->save();
+        $article = Article::findOrFail($request->id);
+        $article->status = $request->_status;
+        $article->save();
 
         return $request->id;
+    }
+
+    public function deleted()
+    {
+        $articles = Article::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
+
+        return view('back.articles.trashed', [
+            'articles' => $articles,
+        ]);
+    }
+
+
+    public function recovery($id)
+    {
+        Article::onlyTrashed()->find($id)->restore();
+        toastr()->success('Geri Dönüşüm Başarılı');
+        return back();
+    }
+
+    public function hardDelete($id)
+    {
+        $article =  Article::onlyTrashed()->find($id);
+
+        $image =  $article->image;
+
+
+        if (File::exists(public_path($image))) {
+
+            File::delete(public_path($image));
+        }
+
+
+        $article->forceDelete();
+        toastr()->success('Tamamen Silindi');
+        return back();
     }
 }

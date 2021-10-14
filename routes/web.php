@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\Back\ArticleController;
 use App\Http\Controllers\Back\AuthController;
-use App\Http\Controllers\Back\DashboardController;
+use App\Http\Controllers\Back\CategoryController as BackCategoryController;
 use App\Http\Controllers\Front\CategoryController;
+use App\Http\Controllers\Back\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,14 +16,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('switch', [ArticleController::class, 'switch'])->name('switch');
-
 //auth check
 Route::prefix('admin')->middleware('auth')->group(function () {
-
 	Route::get('dashboard', [DashboardController::class, 'index'])->name('admin');
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+	//Category
+
+	Route::get('category/edit', [BackCategoryController::class, 'editCategory'])->name('edit.category');
+	Route::get('category/edit/update', [BackCategoryController::class, 'updateCategory'])->name('update.category');
+	Route::get('category/delete/{id}', [BackCategoryController::class, 'deleteCategory'])->name('delete.category');
+	Route::resource('category', BackCategoryController::class);
+
+	//Makale
+	Route::get('makaleler/silinenler', [ArticleController::class, 'deleted'])->name('makaleler.silinenler');
+	Route::get('recovery/{id}', [ArticleController::class, 'recovery'])->name('recovery');
+	Route::get('makale/delete/{id}', [ArticleController::class, 'hardDelete'])->name('hard.delete');
 	Route::resource('makaleler', ArticleController::class);
 });
 

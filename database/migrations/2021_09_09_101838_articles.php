@@ -21,6 +21,7 @@ class Articles extends Migration
             $table->longText('content');
             $table->integer('hit')->default(0);
             $table->string('slug');
+            $table->softDeletes();
             $table->string('status')->default('pasif');
             $table->timestamps();
 

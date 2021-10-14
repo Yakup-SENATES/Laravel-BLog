@@ -45,6 +45,17 @@
 					<input type="file" name="image" class="form-control col-md-3" value="{{$article->image}}">
 				  </div>
 
+			
+
+				  <div class="form-group">
+					<label for="status">Durum</label>
+					<select class="form-control col-md-3" name="status" id="status" value="{{$article->status}}" required> 
+					  <option value="">~Seçim Yapınız</option>					 
+					  <option>Aktif</option>
+					  <option>Pasif</option>								
+					</select>
+				  </div>
+				
 				  {{--<div class="form-group" id="içerik">
 					  <label for="içerik">İçerik</label>
 					  <textarea class="form-control" id="editor" name="content" rows="5">{{old('content')}}</textarea>
