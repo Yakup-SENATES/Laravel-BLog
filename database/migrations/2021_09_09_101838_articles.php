@@ -15,7 +15,7 @@ class Articles extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->onDelete('cascade');
             $table->string('title');
             $table->string('image');
             $table->longText('content');

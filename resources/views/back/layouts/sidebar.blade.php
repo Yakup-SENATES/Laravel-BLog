@@ -29,13 +29,13 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMakale"
+                    aria-expanded="true" aria-controls="collapseMakale">
                     <i class="fas fa-fw fa-edit"></i>
                     <span>Makaleler</span>
                 </a>
-                <div id="collapseTwo" class="collapse @if(Request::segment(2)=='makaleler') show @endif "aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-gray-300 py-2 collapse-inner rounded">
+                <div id="collapseMakale" class="collapse @if(Request::segment(2)=='makaleler') show @endif "aria-labelledby="headingMakale" data-parent="#accordionSidebar">
+                    <div class="bg-gray-300 py-2 collapse-inner rounded"> 
                         <h6 class="collapse-header text-black-50 ">Makale İşlemleri:</h6>
                         <a class="collapse-item @if(Request::segment(2)=='makaleler'and !Request::segment(3)) active @endif" href="{{route('makaleler.index')}}">Tüm Makaleler</a>
                         <a class="collapse-item @if(Request::segment(2)=='makaleler'and Request::segment(3)=='create') active @endif" href="{{route('makaleler.create')}}">Makale Oluştur</a>
@@ -45,11 +45,29 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item @if (Request::segment(2)=='category')active @endif">
-                <a href="{{ route('category.index') }}" class="nav-link" href="#" >
+                <a href="{{ route('category.index') }}" class="nav-link">
                    <i class="fas fa-list "></i>
                     <span>Kategoriler</span>
                 </a>              
             </li>
+            
+            {{--Pages--}}
+            <li class="nav-item @if (Request::segment(2)=='pages')active @endif">
+                <a href="{{ route('pages.index') }}" class="nav-link" data-target="#collapsePages"
+                data-toggle="collapse" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fa fa-file" aria-hidden="true"></i>
+                    <span>Sayfalar</span>
+                </a> 
+                <div id="collapsePages" class="collapse @if(Request::segment(2)=='pages') show @endif "aria-labelledby="headingPage" data-parent="#accordionSidebar">
+                    <div class="bg-gray-300 py-2 collapse-inner rounded">
+                        <h6 class="collapse-header text-black-50 ">Sayfa İşlemleri:</h6>
+                        <a class="collapse-item @if(Request::segment(2)=='pages'and !Request::segment(3)) active @endif" href="{{route('pages.index')}}">Tüm Sayfalar</a>
+                        <a class="collapse-item @if(Request::segment(2)=='pages'and Request::segment(3)=='create') active @endif" href="{{route('pages.create')}}">Sayfa Oluştur</a>
+                    </div>
+                </div>             
+            </li>
+
+            {{--End Pages--}}
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -60,13 +78,13 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            {{--<li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Pages</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
                         <a class="collapse-item" href="{{route('login')}}">Login</a>
@@ -77,7 +95,7 @@
                         <a class="collapse-item" href="blank.html">Blank Page</a>
                     </div>
                 </div>
-            </li>
+            </li>--}}
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Back;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\category;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -105,6 +105,16 @@ class CategoryController extends Controller
 
     public function deleteCategory($id)
     {
+
+        $articles[] = Article::whereCategory_id($id)->get();
+
+        for ($i = 0; $i < count($articles[0]); $i++) {
+
+            Article::whereId($articles[0][$i]->id)->ForceDelete();
+        }
+        //return back();
+        //die();
+
         if (category::findOrFail($id)->delete()) {
             toastr()->success('Kategory Başarıyla Kaldırıldı');
         }
@@ -137,7 +147,7 @@ class CategoryController extends Controller
         $category->name = $new_category;
         $category->slug = Str::slug($new_category);
 
-        if (category::whereSlug($category->slug)->first()) {
+        if (category::whereName($category->name)->whereNotIn('id', [$category->id])->first()) {
             toastr()->error('Bu  ALan Zaten Mevcut');
             return back();
         } else {

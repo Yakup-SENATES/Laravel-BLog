@@ -10,7 +10,7 @@ use App\Models\Pages;
 
 use Validator;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Mail;
 
 class CategoryController extends Controller
 {
@@ -104,6 +104,22 @@ class CategoryController extends Controller
             'topic' => 'required',
             'message' => 'required|min:',
         ];
+
+
+        //Mailtrap
+
+        Mail::send([], [], function ($message) use ($request) {
+
+            $message->from("cihangir@hanzade.com", 'Cihangir Hanzade Dergisi');
+            $message->to('yakuppsenates@gmail.com');
+            $message->setBody('Mesaj Gönderen : ' . $request->name . '<br>
+                           Mesaj Gönderen Mail: ' . $request->email . ' <br>
+                           Mesaj Konusu: ' . $request->topic . ' <br>
+                           Mesaj : ' . $request->message . '<br> <br>
+                           Mesaj Tarihi :' . now() . '', 'text/html');
+            $message->subject($request->name . ' Mesaj Bıraktı');
+        });
+
 
         $validate = Validator::make($request->post(), $rules);
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Back\AuthController;
 use App\Http\Controllers\Back\CategoryController as BackCategoryController;
 use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Back\DashboardController;
+use App\Http\Controllers\Back\PageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,6 +22,23 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 	Route::get('dashboard', [DashboardController::class, 'index'])->name('admin');
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+	//Switch for change status
+	Route::get('status/switch', [ArticleController::class, 'switch'])->name('switch');
+
+	// Page Settings
+	Route::get('pages/index', [PageController::class, 'index'])->name('pages.index');
+	Route::get('pages/edit/{id}', [PageController::class, 'edit'])->name('pages.edit');
+	Route::post('pages/update', [PageController::class, 'update'])->name('pages.update');
+	Route::get('pages/create', [PageController::class, 'create'])->name('pages.create');
+	Route::post('pages/store', [PageController::class, 'store'])->name('pages.store');
+	Route::delete('pages/destroy/{id}', [PageController::class, 'destroy'])->name('pages.destroy');
+	Route::get('pages/deleted', [PageController::class, 'deleted'])->name('pages.deleted');
+	Route::get('page/recovery{id}', [PageController::class, 'recovery'])->name('page.recovery');
+	Route::get('page/hardDelete/{id}}', [PageController::class, 'hardDelete'])->name('page.hard.delete');
+	Route::get('page/status/switch', [PageController::class, 'switch'])->name('page.switch');
+	Route::get('page/order', [PageController::class, 'order'])->name('page.order');
+
+
 	//Category
 
 	Route::get('category/edit', [BackCategoryController::class, 'editCategory'])->name('edit.category');
@@ -28,7 +46,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 	Route::get('category/delete/{id}', [BackCategoryController::class, 'deleteCategory'])->name('delete.category');
 	Route::resource('category', BackCategoryController::class);
 
-	//Makale
+	//Articles
+
 	Route::get('makaleler/silinenler', [ArticleController::class, 'deleted'])->name('makaleler.silinenler');
 	Route::get('recovery/{id}', [ArticleController::class, 'recovery'])->name('recovery');
 	Route::get('makale/delete/{id}', [ArticleController::class, 'hardDelete'])->name('hard.delete');
@@ -38,13 +57,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 //admin/login
 Route::prefix('admin')->middleware('isLogin')->group(function () {
-	Route::get('switch', [ArticleController::class, 'switch'])->name('switch');
 	Route::get('login', [AuthController::class, 'login'])->name('login');
 	Route::post('login', [AuthController::class, 'loginPost'])->name('loginPost');
 });
 
-//just login
+//just login & register
 Route::get('login', [CategoryController::class, 'index']);
+Route::get('register', [CategoryController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------

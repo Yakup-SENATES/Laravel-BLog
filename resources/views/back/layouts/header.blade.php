@@ -22,7 +22,7 @@
 
     <!-- Custom styles for this page Datatables -->
     <link href="{{asset('back')}}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+    
     {{--summernote--}}
     @yield('css') 
 

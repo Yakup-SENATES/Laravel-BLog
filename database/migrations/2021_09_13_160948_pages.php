@@ -18,8 +18,10 @@ class Pages extends Migration
             $table->string('title');
             $table->string('image');
             $table->string('slug');
+            $table->softDeletes();
             $table->longText('content');
             $table->integer('order');
+            $table->string('status')->default('pasif');
             $table->timestamps();
         });
     }

@@ -169,7 +169,7 @@ class ArticleController extends Controller
         $article = Article::findOrFail($request->id);
         $article->status = $request->_status;
         $article->save();
-
+        toastr()->success('Başarıyla durum değiştirildi');
         return $request->id;
     }
 

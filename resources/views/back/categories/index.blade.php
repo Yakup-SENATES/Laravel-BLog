@@ -7,7 +7,7 @@
 
 <div class="row">
 
-	<div class="col-md-4">
+	<div class="col-md-5">
 		<div class="card shadow mb-4">
 			<div class="card-header py-3">
 					<h4 class="m-0 font-weight-bold text-danger">
@@ -35,10 +35,16 @@
 												<td>{{$category->articleCount()}}</td>	
 												<td>
 													<div class="d-flex">
-														<a title="Düzenle" cat-id='{{$category->id}}' name='{{$category->name}}' class="btn btn-success m-1 edit-click"><i class="fa fa-pen"></i></a>
+														<a title="Düzenle" cat-id='{{$category->id}}' category_count="{{$category->articleCount()}}" name='{{$category->name}}' class="btn btn-success m-1 edit-click"><i class="fa fa-pen"></i></a>
 																							
-														<a  href ="{{ route('delete.category', $category->id) }}" title="Sil" class="btn btn-danger py m-1" ><i class="fa fa-trash"></i></a>			
-
+														{{--<a  href ="{{ route('delete.category', $category->id) }}" title="Sil" class="btn btn-danger py m-1 delete-click" ><i class="fa fa-trash"></i></a>			--}}
+														<form action="{{ route('delete.category', $category->id) }}" method="get">
+															@csrf
+														<button type="submit" title="Sil" class="btn btn-danger py m-1 delete-click" ><i class="fa fa-trash"></i></button>
+														
+														</form>
+														</div>
+														<small id="helpId" class="text-muted" style="background-color: aqua">*Bütün yazılar silinir</small>
 												</td>
 
 											</tr>	
@@ -127,22 +133,23 @@
 		$('.edit-click').click(function() {
 			
 			id = $(this)[0].getAttribute('cat-id');	
+			count = $(this)[0].getAttribute('category_count')
+			console.log(count);
 			console.log('id : '+id);			
 			$.get('category/edit',{id:id}, function (data) { 
-				console.log(data);				
-
-  				$( "input" ).val( data.name );
-  				//$( ".category_new" ).val( data.id );
-				 
+				console.log(data);								
+  				$( "input[type=text][name=category_edit]" ).val( data.name );
+  								 
 				$('#editModal').modal();
 
-			 });
+			 });			
+		});	
 
-			
-			
-		});
-		
+		$('.delete-click').click(function() {
+			console.log('Bu kategoriye at herhangi bir yazı varsa silindi !! ');					
+		});		
 	  })
+
   </script>
 
 @endsection

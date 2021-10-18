@@ -41,7 +41,7 @@
 								<td>{{$article->getCategory->name}}</td>
 								<td>{{$article->hit}}</td>
 								<td>
-									<input class="_switch" data-id="{{$article->id}}" type="checkbox" @if ($article->status=='aktif') checked @endif data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger">
+									<input class="switch" article-id="{{$article->id}}" type="checkbox" @if ($article->status=='aktif') checked @endif data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" name='switch_status'>
 
 									{{--<input class="_switch" data-id="{{$article->id}}" type="checkbox" @if ($article->status=='aktif') checked @endif  data-toggle="toggle" data-onstyle="success" data-on="<i class='fa fa-thumbs-up'></i>" data-offstyle="danger" data-off="<i class='fa fa-thumbs-down'></i>">--}}
 									
@@ -76,15 +76,14 @@
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
 <script>
-	$(function() {
-		$('._switch').change(function() {
 
-		  id = $(this)[0].getAttribute('data-id');
-		var _status =  $(this).prop('checked')==true ? 'aktif' : 'pasif' ;	
-		  $.get( "http://127.0.0.1:8000/admin/switch",{id:id , _status:_status},  function( data ,status ) {
-				
+    $(function() {
+		$('.switch').change(function() {
 
-			alert( "Load was performed." );
+		  var  id = $(this)[0].getAttribute('article-id');
+	      var _status =  $(this).prop('checked')==true ? 'aktif' : 'pasif' ;	
+		  $.get( "{{route('switch')}}",{id:id , _status:_status},  function( data ,status ) {
+								
 			console.log(_status);
 			
 			});
@@ -94,50 +93,11 @@
 		
 	  })
 	})
+
+
   </script>
 
 
-{{--
-<script>
-	$(function() {
-	  $('.switch').change(function() {
-		//  alert($(this)[0].getAttribute('data-id') );		
-	 		//id = $(this)[0].getAttribute('data-id') ;
-			var id =  $(this).data('id');
-			var _status =  $(this).prop('checked')==true ? 'aktif' : 'pasif' ;					
-			 $.get("{{ route('switch') }}", {id:id , _status:_status} , function(data, status){
-    		console.log('Başarılı');
-    		console.log(id);
-    	//	console.log(status);
-    	//	console.log(_status);
-
-  });
-	  })
-	})
-</script>
-  
-		<script>
-			$(function () {   
-				$('.switch').on('change' , function () {
-
-					var status =  $(this).prop('checked')==true ? 1 : 0 ;				
-					var id = $(this).data('id');
-				
-					$.ajax({
-						type: "GET",
-						url: "{{ route('switch') }}",
-						data: { id: id},
-						dataType: "JSON",
-						success:function (data) {
-							console.log('Success');
-						}
-					});
-				
-			  })
-
-			})
-
-		</script>  --}}
 @endsection
 
 @section('css')
