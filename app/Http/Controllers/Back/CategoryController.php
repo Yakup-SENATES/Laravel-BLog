@@ -22,14 +22,7 @@ class CategoryController extends Controller
         return view('back.categories.index', ['categories' => $categories]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -59,16 +52,6 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(category $category)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -81,27 +64,6 @@ class CategoryController extends Controller
         return view('back.categories.edit');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(category $category)
-    {
-    }
 
     public function deleteCategory($id)
     {
@@ -141,17 +103,18 @@ class CategoryController extends Controller
 
         $new_category = $request->category_edit;
 
-        $find = $request->id;
+        $find = $request->category_id;
 
-        dd($request);
-        $category =  category::whereName($find)->first();
-        dd($category);
+        //  dd($find);
+        $category =  category::whereId($find)->first();
+
+        //dd($category);
 
         $category->name = $new_category;
         $category->slug = Str::slug($new_category);
 
         if (category::whereName($category->name)->whereNotIn('id', [$category->id])->first()) {
-            toastr()->error('Bu  ALan Zaten Mevcut');
+            toastr()->error('Bu  Alan Zaten Mevcut');
             return back();
         } else {
             $category->save();

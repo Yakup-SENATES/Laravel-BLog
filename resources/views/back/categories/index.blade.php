@@ -101,7 +101,7 @@
 				<div class="form-group">
 				<label for="">Kategory Adı</label>
 				<input type="text" name="category_edit" id="category_edit" class="form-control" value="">
-				<input type="hidden" name="id" data-category="" id="category_new" value=""> 
+				<input type="hidden" name="category_id"  id="category_new" value=""> 
 				</div>
 
 			 </div>
@@ -133,12 +133,12 @@
 		$('.edit-click').click(function() {
 			
 			id = $(this)[0].getAttribute('cat-id');	
-			count = $(this)[0].getAttribute('category_count')
-			console.log(count);
+			//nameTest= $(this)[0].getAttribute('category_name');
 			console.log('id : '+id);			
 			$.get('category/edit',{id:id}, function (data) { 
-				console.log(data);								
+				console.log(data);												
   				$( "input[type=text][name=category_edit]" ).val( data.name );
+  				$( "input[type=hidden][name=category_id]" ).val( data.id );
   								 
 				$('#editModal').modal();
 
