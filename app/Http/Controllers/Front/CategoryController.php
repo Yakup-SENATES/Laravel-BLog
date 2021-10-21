@@ -24,6 +24,7 @@ class CategoryController extends Controller
 
         view()->share('pages', Pages::where('status', 'aktif')->orderBy('order', 'ASC')->whereStatus('aktif')->get());
         view()->share('categories', Category::All());
+        view()->share('config', Config::find(1));
     }
 
 
